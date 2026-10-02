@@ -10,7 +10,10 @@ import httpx
 from llm_eval.pricing import ModelPrice
 from llm_eval.providers.base import Completion
 
-API_URL = "https://openrouter.ai/api/v1/chat/completions"
+DEFAULT_BASE_URL = "https://openrouter.ai/api/v1"
+API_URL = f"{DEFAULT_BASE_URL}/chat/completions"
+DEFAULT_API_KEY_ENV = "OPENROUTER_API_KEY"
+LOCAL_DUMMY_KEY = "not-needed"
 RETRY_STATUS = {408, 429, 500, 502, 503, 504}
 SYSTEM_PROMPT = "You extract structured data. Reply with a single JSON object and nothing else."
 
@@ -24,10 +27,27 @@ class OpenRouterProvider:
         max_retries: int = 3,
         temperature: float = 0.0,
         client: httpx.Client | None = None,
+        base_url: str | None = None,
+        api_key_env: str | None = None,
+        require_key: bool | None = None,
     ) -> None:
-        self.api_key = api_key or os.environ.get("OPENROUTER_API_KEY")
+        """Chat-completions client for OpenRouter or any OpenAI-compatible endpoint.
+
+        With no ``base_url`` this targets OpenRouter and requires a key. With a custom
+        ``base_url`` (e.g. Ollama at http://localhost:11434/v1) the key is optional: it is
+        read from ``api_key_env`` if that is set, otherwise a dummy value is sent.
+        """
+        self.base_url = (base_url or DEFAULT_BASE_URL).rstrip("/")
+        self.is_openrouter = base_url is None
+        self.url = f"{self.base_url}/chat/completions"
+        env_name = api_key_env or (DEFAULT_API_KEY_ENV if self.is_openrouter else None)
+        if require_key is None:
+            require_key = self.is_openrouter or bool(api_key_env)
+        self.api_key = api_key or (os.environ.get(env_name) if env_name else None)
         if not self.api_key:
-            raise RuntimeError("OPENROUTER_API_KEY is not set")
+            if require_key:
+                raise RuntimeError(f"{env_name or DEFAULT_API_KEY_ENV} is not set")
+            self.api_key = LOCAL_DUMMY_KEY
         self.prices = prices or {}
         self.max_retries = max_retries
         self.temperature = temperature
@@ -41,17 +61,16 @@ class OpenRouterProvider:
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": prompt},
             ],
-            "usage": {"include": True},
         }
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "X-Title": "llm-eval-harness",
-        }
+        headers = {"Authorization": f"Bearer {self.api_key}"}
+        if self.is_openrouter:
+            payload["usage"] = {"include": True}
+            headers["X-Title"] = "llm-eval-harness"
         start = time.perf_counter()
         last_error = "unknown error"
         for attempt in range(self.max_retries + 1):
             try:
-                resp = self.client.post(API_URL, json=payload, headers=headers)
+                resp = self.client.post(self.url, json=payload, headers=headers)
             except httpx.HTTPError as exc:
                 last_error = f"{type(exc).__name__}: {exc}"
             else:

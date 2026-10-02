@@ -9,7 +9,7 @@ import yaml
 
 from llm_eval.pricing import ModelPrice
 
-PROVIDERS = {"mock", "openrouter"}
+PROVIDERS = {"mock", "openrouter", "openai_compatible"}
 
 
 @dataclass(frozen=True)
@@ -29,6 +29,8 @@ class RunConfig:
     output_dir: Path = Path("results")
     seed: int = 0
     regression: dict = field(default_factory=dict)
+    base_url: str | None = None
+    api_key_env: str | None = None
 
     @property
     def prices(self) -> dict[str, ModelPrice]:
@@ -47,6 +49,10 @@ def load_config(path: str | Path) -> RunConfig:
         raise ValueError(f"{path}: at least one model is required")
     if not raw.get("suites"):
         raise ValueError(f"{path}: at least one suite is required")
+
+    base_url = raw.get("base_url")
+    if provider == "openai_compatible" and not base_url:
+        raise ValueError(f"{path}: base_url is required for provider openai_compatible")
 
     models = []
     for entry in raw["models"]:
@@ -73,4 +79,6 @@ def load_config(path: str | Path) -> RunConfig:
         output_dir=(base / raw.get("output_dir", "results")).resolve(),
         seed=int(raw.get("seed", 0)),
         regression=regression,
+        base_url=base_url,
+        api_key_env=raw.get("api_key_env"),
     )

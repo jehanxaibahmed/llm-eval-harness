@@ -59,3 +59,40 @@ def test_cli_run(tmp_path, capsys):
     assert main(["run", "-c", str(ROOT / "configs" / "mock.yaml"), "-o", str(tmp_path)]) == 0
     assert "precise-large" in capsys.readouterr().out
     assert any(tmp_path.iterdir())
+
+
+def test_build_provider_openai_compatible(tmp_path):
+    from llm_eval.config import load_config
+    from llm_eval.runner import build_provider
+
+    cfg = tmp_path / "c.yaml"
+    cfg.write_text(
+        "provider: openai_compatible\nbase_url: http://localhost:11434/v1\n"
+        "suites: [s]\nmodels: [llama3.1:8b]\n"
+    )
+    config = load_config(cfg)
+    assert config.base_url == "http://localhost:11434/v1" and config.api_key_env is None
+    provider = build_provider(config, [])
+    assert provider.url == "http://localhost:11434/v1/chat/completions"
+
+
+def test_openai_compatible_requires_base_url(tmp_path):
+    import pytest
+
+    from llm_eval.config import load_config
+
+    cfg = tmp_path / "c.yaml"
+    cfg.write_text("provider: openai_compatible\nsuites: [s]\nmodels: [m]\n")
+    with pytest.raises(ValueError, match="base_url"):
+        load_config(cfg)
+
+
+def test_ollama_config_models():
+    from pathlib import Path
+
+    from llm_eval.config import load_config
+
+    config = load_config(Path(__file__).parent.parent / "configs" / "ollama.yaml")
+    ids = [m.id for m in config.models]
+    assert ids == ["qwen2.5:14b-instruct", "qwen2.5:32b-instruct", "llama3.1:8b", "gemma2:9b"]
+    assert not any("deepseek" in i for i in ids)

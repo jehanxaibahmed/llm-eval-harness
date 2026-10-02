@@ -23,6 +23,17 @@ export OPENROUTER_API_KEY=sk-or-...
 .venv/bin/llm-eval run -c configs/openrouter.yaml
 ```
 
+### Local models with Ollama
+
+Any OpenAI-compatible endpoint works, including [Ollama](https://ollama.com). No real API key is needed (a dummy one is sent), and cost is reported as 0 unless you set a `price` on a model.
+
+```bash
+ollama pull llama3.1:8b
+.venv/bin/llm-eval run -c configs/ollama.yaml
+```
+
+`configs/ollama.yaml` sets `provider: openai_compatible` and `base_url: http://localhost:11434/v1`. Edit its `models` list to match what you have pulled. Set `api_key_env: MY_KEY_VAR` if your server needs a real key. Avoid reasoning models such as `deepseek-r1`: their thinking output breaks JSON parsing.
+
 | Command | What it does |
 |---|---|
 | `llm-eval run -c <config>` | Run every suite × model × case, save artefacts and reports |
@@ -60,7 +71,7 @@ src/llm_eval/
   regression.py       baseline comparison and thresholds
   cli.py              llm-eval entry point
 evals/<suite>/        suite.yaml · prompt.md · cases.jsonl
-configs/              mock.yaml (CI) · openrouter.yaml (live)
+configs/              mock.yaml (CI) · openrouter.yaml (live) · ollama.yaml (local)
 baselines/            committed metrics the CI gate compares against
 docs/                 architecture notes and a sample report
 ```

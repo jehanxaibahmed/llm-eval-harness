@@ -1,0 +1,22 @@
+# Local models via Ollama's OpenAI-compatible API. No real API key needed.
+# Start Ollama, then pull the models:  ollama pull qwen2.5:14b-instruct  (etc.)
+# Any OpenAI-compatible server works: change base_url (e.g. LM Studio, vLLM).
+# Set api_key_env to the name of an env var if the server needs a real key.
+# Do not add reasoning models such as deepseek-r1: their thinking output breaks JSON parsing.
+# Cost is 0 unless a model sets a price (USD per million tokens).
+name: ollama
+provider: openai_compatible
+base_url: http://localhost:11434/v1
+concurrency: 1
+suites:
+  - evals/order_extraction
+  - evals/invoice_extraction
+models:
+  - id: qwen2.5:14b-instruct
+    label: qwen2.5-14b
+  - id: qwen2.5:32b-instruct
+    label: qwen2.5-32b
+  - id: llama3.1:8b
+    label: llama3.1-8b
+  - id: gemma2:9b
+    label: gemma2-9b
