@@ -1,0 +1,15 @@
+# Offline run: simulated models, no API key needed. Used by CI.
+name: mock
+provider: mock
+seed: 0
+concurrency: 8
+suites:
+  - evals/order_extraction
+  - evals/invoice_extraction
+models:
+  - id: mock/precise-large
+    label: precise-large
+  - id: mock/balanced-medium
+    label: balanced-medium
+  - id: mock/fast-small
+    label: fast-small
