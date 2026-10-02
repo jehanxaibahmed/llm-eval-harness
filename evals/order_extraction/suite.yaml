@@ -1,0 +1,11 @@
+name: order_extraction
+description: Extract customer, delivery and line items from free-text order emails.
+prompt: prompt.md
+cases: cases.jsonl
+fields:
+  po_number: exact
+  delivery_method: exact
+  required_by: date
+  delivery_address.postcode: normalized
+  items.sku: exact
+  items.quantity: { matcher: numeric, tolerance: 0 }
