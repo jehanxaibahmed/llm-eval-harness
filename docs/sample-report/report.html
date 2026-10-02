@@ -1,0 +1,151 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Eval Report</title><style>
+:root{color-scheme:light;--bg:#f6f6f4;--surface:#fcfcfb;--border:#e4e3df;--grid:#ecebe7;
+--text:#0b0b0b;--text-2:#52514e;--muted:#8a8984;--accent:#2a78d6;--other:#a3a29c;--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--s5:#e87ba4;--s6:#008300;--s7:#4a3aa7;--s8:#e34948;}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+--bg:#121211;--surface:#1a1a19;--border:#2e2e2b;--grid:#262624;--text:#fff;--text-2:#c3c2b7;
+--muted:#8f8e86;--accent:#3987e5;--other:#6b6a64;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#121211;--surface:#1a1a19;--border:#2e2e2b;
+--grid:#262624;--text:#fff;--text-2:#c3c2b7;--muted:#8f8e86;--accent:#3987e5;--other:#6b6a64;
+--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+font:15px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1080px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:26px;margin:0 0 4px}h2{font-size:19px;margin:40px 0 12px}
+h3{font-size:15px;margin:20px 0 8px;color:var(--text-2)}
+.meta{color:var(--text-2);font-size:13px;margin:0 0 24px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;
+margin:12px 0}
+.picks{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.pick .k{font-size:12px;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em}
+.pick .v{font-size:17px;font-weight:600;display:flex;align-items:center;gap:8px}
+.sw{width:10px;height:10px;border-radius:3px;display:inline-block;flex:none}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--text-2);margin:4px 0 8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.chart h4{margin:0 0 2px;font-size:14px}.chart p{margin:0 0 8px;font-size:12px;color:var(--muted)}
+.chart .row{display:grid;grid-template-columns:minmax(80px,38%) 1fr;align-items:center;gap:8px;
+padding:4px 6px;margin:0 -6px;border-radius:6px;font-size:12px}
+.chart .row:hover{background:var(--grid)}
+.chart .lbl{color:var(--text-2);text-align:right;overflow:hidden;text-overflow:ellipsis;
+white-space:nowrap}
+.chart .track{display:flex;align-items:center;gap:6px;border-left:1px solid var(--border);
+min-height:18px}
+.chart .bar{display:block;height:16px;min-width:2px;border-radius:0 4px 4px 0}
+.chart .val{color:var(--text);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
+th{color:var(--text-2);font-weight:600}th:first-child,td:first-child{text-align:left}
+td.l,th.l{text-align:left}
+code{font:12px ui-monospace,SFMono-Regular,Menlo,monospace}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.fields ul{margin:0;padding:0;list-style:none;font-size:13px}
+.fields li{display:flex;justify-content:space-between;gap:8px;padding:3px 0;
+border-bottom:1px dashed var(--border)}
+#tip{position:fixed;pointer-events:none;background:var(--text);color:var(--surface);
+font-size:12px;padding:6px 8px;border-radius:6px;opacity:0;transition:opacity .08s;
+white-space:pre;z-index:10}
+</style></head><body><main><h1>Model comparison: mock</h1>
+<p class="meta">Run <code>20261002T180213Z-mock</code> · 3 models · 2 suites · started 2026-10-02 18:02:13 UTC</p>
+<h2>Overall</h2>
+<div class="legend"><span><i class="sw" style="background:var(--s1)"></i>precise-large</span><span><i class="sw" style="background:var(--s2)"></i>balanced-medium</span><span><i class="sw" style="background:var(--s3)"></i>fast-small</span></div>
+<div class="card tablewrap"><table><thead><tr><th>Model</th><th>Field accuracy</th><th>Exact match</th><th>Valid JSON</th><th>Latency p50</th><th>Total cost</th></tr></thead><tbody>
+<tr><td><i class="sw" style="background:var(--s1)"></i> precise-large</td><td>97.5%</td><td>58.3%</td><td>100.0%</td><td>2.31s</td><td>$0.0673</td></tr>
+<tr><td><i class="sw" style="background:var(--s2)"></i> balanced-medium</td><td>87.5%</td><td>20.8%</td><td>95.8%</td><td>1.12s</td><td>$0.00806</td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td>63.1%</td><td>0.0%</td><td>91.7%</td><td>0.38s</td><td>$0.00180</td></tr>
+</tbody></table></div>
+<h2>order_extraction</h2>
+<div class="picks">
+<div class="card pick"><div class="k">Most accurate</div><div class="v"><i class="sw" style="background:var(--s1)"></i>precise-large</div></div>
+<div class="card pick"><div class="k">Cheapest</div><div class="v"><i class="sw" style="background:var(--s3)"></i>fast-small</div></div>
+<div class="card pick"><div class="k">Fastest (p50)</div><div class="v"><i class="sw" style="background:var(--s3)"></i>fast-small</div></div>
+<div class="card pick"><div class="k">Best value (within 5 pts)</div><div class="v"><i class="sw" style="background:var(--s1)"></i>precise-large</div></div>
+</div>
+<div class="charts">
+<div class="card chart" role="figure" aria-label="Field accuracy"><h4>Field accuracy</h4><p>Share of expected fields extracted correctly</p><div class="row" data-tip="precise-large
+Field accuracy: 95.8%"><span class="lbl">precise-large</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 0.9583);background:var(--s1)"></span><span class="val">95.8%</span></span></div><div class="row" data-tip="balanced-medium
+Field accuracy: 81.2%"><span class="lbl">balanced-medium</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 0.8125);background:var(--s2)"></span><span class="val">81.2%</span></span></div><div class="row" data-tip="fast-small
+Field accuracy: 61.8%"><span class="lbl">fast-small</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 0.6181);background:var(--s3)"></span><span class="val">61.8%</span></span></div></div>
+<div class="card chart" role="figure" aria-label="Cost per document"><h4>Cost per document</h4><p>Mean USD per call; lower is better</p><div class="row" data-tip="precise-large
+Cost per document: $0.00222"><span class="lbl">precise-large</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 1.0000);background:var(--s1)"></span><span class="val">$0.00222</span></span></div><div class="row" data-tip="balanced-medium
+Cost per document: $0.00027"><span class="lbl">balanced-medium</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 0.1212);background:var(--s2)"></span><span class="val">$0.00027</span></span></div><div class="row" data-tip="fast-small
+Cost per document: $0.00006"><span class="lbl">fast-small</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 0.0281);background:var(--s3)"></span><span class="val">$0.00006</span></span></div></div>
+<div class="card chart" role="figure" aria-label="Latency p50"><h4>Latency p50</h4><p>Median seconds per call; lower is better</p><div class="row" data-tip="precise-large
+Latency p50: 2.25s"><span class="lbl">precise-large</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 1.0000);background:var(--s1)"></span><span class="val">2.25s</span></span></div><div class="row" data-tip="balanced-medium
+Latency p50: 1.08s"><span class="lbl">balanced-medium</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 0.4811);background:var(--s2)"></span><span class="val">1.08s</span></span></div><div class="row" data-tip="fast-small
+Latency p50: 0.39s"><span class="lbl">fast-small</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 0.1731);background:var(--s3)"></span><span class="val">0.39s</span></span></div></div>
+</div>
+<div class="card tablewrap"><table><thead><tr><th>Model</th><th>Field acc.</th><th>Exact match</th><th>Valid JSON</th><th>p50</th><th>p95</th><th>Cost/doc</th><th>Errors</th></tr></thead><tbody>
+<tr><td><i class="sw" style="background:var(--s1)"></i> precise-large</td><td>95.8%</td><td>50.0%</td><td>100.0%</td><td>2.25s</td><td>2.89s</td><td>$0.00222</td><td>0</td></tr>
+<tr><td><i class="sw" style="background:var(--s2)"></i> balanced-medium</td><td>81.2%</td><td>16.7%</td><td>91.7%</td><td>1.08s</td><td>1.32s</td><td>$0.00027</td><td>0</td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td>61.8%</td><td>0.0%</td><td>91.7%</td><td>0.39s</td><td>0.47s</td><td>$0.00006</td><td>0</td></tr>
+</tbody></table></div>
+<h3>Weakest fields</h3><div class="fields">
+<div class="card"><h4><i class="sw" style="background:var(--s1)"></i> precise-large</h4><ul><li><code>delivery_method</code><span>75.0%</span></li><li><code>contact_name</code><span>91.7%</span></li><li><code>delivery_address.postcode</code><span>91.7%</span></li><li><code>items[].quantity</code><span>95.8%</span></li></ul></div>
+<div class="card"><h4><i class="sw" style="background:var(--s2)"></i> balanced-medium</h4><ul><li><code>delivery_address.city</code><span>58.3%</span></li><li><code>customer_name</code><span>75.0%</span></li><li><code>delivery_method</code><span>75.0%</span></li><li><code>contact_name</code><span>83.3%</span></li><li><code>required_by</code><span>83.3%</span></li></ul></div>
+<div class="card"><h4><i class="sw" style="background:var(--s3)"></i> fast-small</h4><ul><li><code>customer_name</code><span>50.0%</span></li><li><code>po_number</code><span>50.0%</span></li><li><code>items[].quantity</code><span>54.2%</span></li><li><code>delivery_method</code><span>58.3%</span></li><li><code>required_by</code><span>58.3%</span></li></ul></div>
+</div>
+<h3>Lowest-scoring cases</h3><div class="card tablewrap"><table><thead><tr><th>Model</th><th class="l">Case</th><th>Accuracy</th><th>Valid JSON</th><th class="l">Error</th></tr></thead><tbody>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>order-002</code></td><td>0.0%</td><td>no</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s2)"></i> balanced-medium</td><td class="l"><code>order-001</code></td><td>0.0%</td><td>no</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>order-008</code></td><td>40.0%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>order-012</code></td><td>50.0%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>order-009</code></td><td>50.0%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>order-005</code></td><td>50.0%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>order-010</code></td><td>68.8%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>order-006</code></td><td>70.0%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>order-004</code></td><td>71.4%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>order-003</code></td><td>75.0%</td><td>yes</td><td class="l"></td></tr>
+</tbody></table></div>
+<h2>invoice_extraction</h2>
+<div class="picks">
+<div class="card pick"><div class="k">Most accurate</div><div class="v"><i class="sw" style="background:var(--s1)"></i>precise-large</div></div>
+<div class="card pick"><div class="k">Cheapest</div><div class="v"><i class="sw" style="background:var(--s3)"></i>fast-small</div></div>
+<div class="card pick"><div class="k">Fastest (p50)</div><div class="v"><i class="sw" style="background:var(--s3)"></i>fast-small</div></div>
+<div class="card pick"><div class="k">Best value (within 5 pts)</div><div class="v"><i class="sw" style="background:var(--s1)"></i>precise-large</div></div>
+</div>
+<div class="charts">
+<div class="card chart" role="figure" aria-label="Field accuracy"><h4>Field accuracy</h4><p>Share of expected fields extracted correctly</p><div class="row" data-tip="precise-large
+Field accuracy: 98.5%"><span class="lbl">precise-large</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 0.9848);background:var(--s1)"></span><span class="val">98.5%</span></span></div><div class="row" data-tip="balanced-medium
+Field accuracy: 90.9%"><span class="lbl">balanced-medium</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 0.9087);background:var(--s2)"></span><span class="val">90.9%</span></span></div><div class="row" data-tip="fast-small
+Field accuracy: 63.9%"><span class="lbl">fast-small</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 0.6388);background:var(--s3)"></span><span class="val">63.9%</span></span></div></div>
+<div class="card chart" role="figure" aria-label="Cost per document"><h4>Cost per document</h4><p>Mean USD per call; lower is better</p><div class="row" data-tip="precise-large
+Cost per document: $0.00339"><span class="lbl">precise-large</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 1.0000);background:var(--s1)"></span><span class="val">$0.00339</span></span></div><div class="row" data-tip="balanced-medium
+Cost per document: $0.00040"><span class="lbl">balanced-medium</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 0.1188);background:var(--s2)"></span><span class="val">$0.00040</span></span></div><div class="row" data-tip="fast-small
+Cost per document: $0.00009"><span class="lbl">fast-small</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 0.0258);background:var(--s3)"></span><span class="val">$0.00009</span></span></div></div>
+<div class="card chart" role="figure" aria-label="Latency p50"><h4>Latency p50</h4><p>Median seconds per call; lower is better</p><div class="row" data-tip="precise-large
+Latency p50: 2.41s"><span class="lbl">precise-large</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 1.0000);background:var(--s1)"></span><span class="val">2.41s</span></span></div><div class="row" data-tip="balanced-medium
+Latency p50: 1.15s"><span class="lbl">balanced-medium</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 0.4779);background:var(--s2)"></span><span class="val">1.15s</span></span></div><div class="row" data-tip="fast-small
+Latency p50: 0.38s"><span class="lbl">fast-small</span><span class="track"><span class="bar" style="width:calc((100% - 76px) * 0.1567);background:var(--s3)"></span><span class="val">0.38s</span></span></div></div>
+</div>
+<div class="card tablewrap"><table><thead><tr><th>Model</th><th>Field acc.</th><th>Exact match</th><th>Valid JSON</th><th>p50</th><th>p95</th><th>Cost/doc</th><th>Errors</th></tr></thead><tbody>
+<tr><td><i class="sw" style="background:var(--s1)"></i> precise-large</td><td>98.5%</td><td>66.7%</td><td>100.0%</td><td>2.41s</td><td>2.85s</td><td>$0.00339</td><td>0</td></tr>
+<tr><td><i class="sw" style="background:var(--s2)"></i> balanced-medium</td><td>90.9%</td><td>25.0%</td><td>100.0%</td><td>1.15s</td><td>1.36s</td><td>$0.00040</td><td>0</td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td>63.9%</td><td>0.0%</td><td>91.7%</td><td>0.38s</td><td>0.47s</td><td>$0.00009</td><td>0</td></tr>
+</tbody></table></div>
+<h3>Weakest fields</h3><div class="fields">
+<div class="card"><h4><i class="sw" style="background:var(--s1)"></i> precise-large</h4><ul><li><code>invoice_number</code><span>91.7%</span></li><li><code>customer_name</code><span>91.7%</span></li><li><code>line_items[].unit_price</code><span>93.5%</span></li></ul></div>
+<div class="card"><h4><i class="sw" style="background:var(--s2)"></i> balanced-medium</h4><ul><li><code>total</code><span>83.3%</span></li><li><code>line_items[].line_total</code><span>83.9%</span></li><li><code>line_items[].sku</code><span>87.1%</span></li><li><code>line_items[].quantity</code><span>87.1%</span></li><li><code>line_items[].unit_price</code><span>87.1%</span></li></ul></div>
+<div class="card"><h4><i class="sw" style="background:var(--s3)"></i> fast-small</h4><ul><li><code>vat</code><span>41.7%</span></li><li><code>currency</code><span>50.0%</span></li><li><code>line_items[].unit_price</code><span>54.8%</span></li><li><code>invoice_number</code><span>58.3%</span></li><li><code>due_date</code><span>58.3%</span></li></ul></div>
+</div>
+<h3>Lowest-scoring cases</h3><div class="card tablewrap"><table><thead><tr><th>Model</th><th class="l">Case</th><th>Accuracy</th><th>Valid JSON</th><th class="l">Error</th></tr></thead><tbody>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>invoice-007</code></td><td>0.0%</td><td>no</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>invoice-012</code></td><td>57.9%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>invoice-003</code></td><td>58.3%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>invoice-002</code></td><td>70.6%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>invoice-008</code></td><td>71.4%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>invoice-006</code></td><td>71.4%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s2)"></i> balanced-medium</td><td class="l"><code>invoice-012</code></td><td>73.7%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>invoice-011</code></td><td>76.5%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>invoice-009</code></td><td>78.6%</td><td>yes</td><td class="l"></td></tr>
+<tr><td><i class="sw" style="background:var(--s3)"></i> fast-small</td><td class="l"><code>invoice-004</code></td><td>78.6%</td><td>yes</td><td class="l"></td></tr>
+</tbody></table></div></main><div id="tip" role="tooltip"></div><script>
+const tip=document.getElementById('tip');
+document.querySelectorAll('[data-tip]').forEach(el=>{
+ el.addEventListener('mousemove',e=>{tip.textContent=el.dataset.tip;tip.style.opacity=1;
+  const x=Math.min(e.clientX+12,innerWidth-tip.offsetWidth-8);
+  tip.style.left=x+'px';tip.style.top=(e.clientY+14)+'px';});
+ el.addEventListener('mouseleave',()=>{tip.style.opacity=0;});
+});
+</script></body></html>
