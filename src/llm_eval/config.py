@@ -60,6 +60,10 @@ def load_config(path: str | Path) -> RunConfig:
             )
         )
 
+    regression = dict(raw.get("regression") or {})
+    if regression.get("baseline"):
+        regression["baseline"] = str((base / regression["baseline"]).resolve())
+
     return RunConfig(
         name=raw.get("name", path.stem),
         provider=provider,
@@ -68,5 +72,5 @@ def load_config(path: str | Path) -> RunConfig:
         concurrency=int(raw.get("concurrency", 4)),
         output_dir=(base / raw.get("output_dir", "results")).resolve(),
         seed=int(raw.get("seed", 0)),
-        regression=raw.get("regression") or {},
+        regression=regression,
     )
