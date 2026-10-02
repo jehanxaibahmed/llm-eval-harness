@@ -9,7 +9,8 @@ from pathlib import Path
 import pandas as pd
 
 from llm_eval.config import load_config
-from llm_eval.runner import run
+from llm_eval.report import write_reports
+from llm_eval.runner import load_run, run
 
 
 def _progress(done: int, total: int) -> None:
@@ -28,9 +29,17 @@ def cmd_run(args: argparse.Namespace) -> int:
     )
     result = run(config, progress=_progress)
     out = result.save(config.output_dir)
+    md, html = write_reports(result, out)
     with pd.option_context("display.width", 200, "display.max_columns", 20):
         print(result.summary.to_string(index=False, float_format=lambda v: f"{v:.4g}"))
-    print(f"\nResults written to {out}", file=sys.stderr)
+    print(f"\nResults written to {out}\n  report: {md}\n  report: {html}", file=sys.stderr)
+    return 0
+
+
+def cmd_report(args: argparse.Namespace) -> int:
+    result = load_run(args.run_dir)
+    md, html = write_reports(result, Path(args.run_dir))
+    print(f"Wrote {md} and {html}", file=sys.stderr)
     return 0
 
 
@@ -42,6 +51,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_run.add_argument("--config", "-c", required=True, help="path to a run config YAML")
     p_run.add_argument("--output-dir", "-o", type=Path, default=None)
     p_run.set_defaults(func=cmd_run)
+
+    p_report = sub.add_parser("report", help="(re)build reports for a saved run directory")
+    p_report.add_argument("run_dir", type=Path)
+    p_report.set_defaults(func=cmd_report)
     return parser
 
 

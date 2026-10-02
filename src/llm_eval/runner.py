@@ -126,3 +126,25 @@ def run(
         fields=pd.DataFrame(field_rows),
         raw=[r[2] for r in results],
     )
+
+
+def load_run(run_dir: str | Path) -> RunResult:
+    """Rebuild a ``RunResult`` from a directory written by ``RunResult.save``."""
+    run_dir = Path(run_dir)
+    meta = json.loads((run_dir / "run.json").read_text())
+    cases = pd.read_csv(run_dir / "cases.csv", keep_default_na=False, na_values={"error": [""]})
+    cases["error"] = cases["error"].astype(object).where(cases["error"].notna(), None)
+    raw_path = run_dir / "raw.jsonl"
+    raw = (
+        [json.loads(line) for line in raw_path.read_text().splitlines()]
+        if raw_path.exists()
+        else []
+    )
+    return RunResult(
+        run_id=meta["run_id"],
+        config_name=meta["config"],
+        started_at=meta["started_at"],
+        cases=cases,
+        fields=pd.read_csv(run_dir / "fields.csv", keep_default_na=False),
+        raw=raw,
+    )
