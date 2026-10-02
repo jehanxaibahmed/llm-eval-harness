@@ -1,0 +1,19 @@
+# Live run via OpenRouter. Requires OPENROUTER_API_KEY.
+# Model ids: https://openrouter.ai/models. Prices are a fallback for when the
+# API response doesn't include cost (USD per million tokens).
+name: openrouter
+provider: openrouter
+concurrency: 4
+suites:
+  - evals/order_extraction
+  - evals/invoice_extraction
+models:
+  - id: anthropic/claude-haiku-4.5
+    label: claude-haiku-4.5
+    price: { input_per_mtok: 1.0, output_per_mtok: 5.0 }
+  - id: openai/gpt-4o-mini
+    label: gpt-4o-mini
+    price: { input_per_mtok: 0.15, output_per_mtok: 0.6 }
+  - id: google/gemini-2.5-flash
+    label: gemini-2.5-flash
+    price: { input_per_mtok: 0.3, output_per_mtok: 2.5 }
