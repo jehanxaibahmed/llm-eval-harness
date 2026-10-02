@@ -1,0 +1,16 @@
+name: invoice_extraction
+description: Extract header fields, line items and totals from plain-text supplier invoices.
+prompt: prompt.md
+cases: cases.jsonl
+fields:
+  invoice_number: exact
+  issue_date: date
+  due_date: date
+  currency: exact
+  line_items.sku: exact
+  line_items.quantity: { matcher: numeric, tolerance: 0 }
+  line_items.unit_price: { matcher: numeric, tolerance: 0.005 }
+  line_items.line_total: { matcher: numeric, tolerance: 0.01 }
+  subtotal: { matcher: numeric, tolerance: 0.01 }
+  vat: { matcher: numeric, tolerance: 0.01 }
+  total: { matcher: numeric, tolerance: 0.01 }
