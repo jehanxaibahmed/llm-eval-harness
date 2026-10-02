@@ -76,3 +76,59 @@ def test_openrouter_requires_key(monkeypatch):
     monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
     with pytest.raises(RuntimeError):
         OpenRouterProvider()
+
+
+def _capturing(body=OK_BODY):
+    seen = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        seen.append(request)
+        return httpx.Response(200, json=body)
+
+    return seen, httpx.Client(transport=httpx.MockTransport(handler))
+
+
+def test_openrouter_defaults_unchanged():
+    seen, client = _capturing()
+    OpenRouterProvider(api_key="k", client=client).complete("x/y", "p")
+    req = seen[0]
+    assert str(req.url) == "https://openrouter.ai/api/v1/chat/completions"
+    assert req.headers["authorization"] == "Bearer k"
+    assert req.headers["x-title"] == "llm-eval-harness"
+    assert json.loads(req.content)["usage"] == {"include": True}
+
+
+def test_custom_base_url_needs_no_key(monkeypatch):
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+    seen, client = _capturing()
+    provider = OpenRouterProvider(base_url="http://localhost:11434/v1/", client=client)
+    out = provider.complete("llama3.1:8b", "p")
+    assert out.ok and out.cost_usd == 0.0
+    req = seen[0]
+    assert str(req.url) == "http://localhost:11434/v1/chat/completions"
+    assert req.headers["authorization"] == "Bearer not-needed"
+    assert "usage" not in json.loads(req.content)
+    assert "x-title" not in req.headers
+
+
+def test_custom_base_url_reads_api_key_env(monkeypatch):
+    monkeypatch.setenv("MY_KEY", "secret")
+    seen, client = _capturing()
+    OpenRouterProvider(base_url="http://h/v1", api_key_env="MY_KEY", client=client).complete(
+        "m", "p"
+    )
+    assert seen[0].headers["authorization"] == "Bearer secret"
+
+
+def test_custom_api_key_env_missing_raises(monkeypatch):
+    monkeypatch.delenv("MY_KEY", raising=False)
+    with pytest.raises(RuntimeError, match="MY_KEY"):
+        OpenRouterProvider(base_url="http://h/v1", api_key_env="MY_KEY")
+
+
+def test_custom_base_url_uses_price_fallback():
+    _, client = _capturing()
+    provider = OpenRouterProvider(
+        base_url="http://h/v1", prices={"m": ModelPrice(1.0, 2.0)}, client=client
+    )
+    assert provider.complete("m", "p").cost_usd == pytest.approx((100 * 1 + 20 * 2) / 1e6)

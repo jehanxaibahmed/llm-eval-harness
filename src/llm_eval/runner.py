@@ -49,8 +49,10 @@ class RunResult:
 
 
 def build_provider(config: RunConfig, suites: list[Suite]) -> Provider:
-    if config.provider == "openrouter":
-        return OpenRouterProvider(prices=config.prices)
+    if config.provider in ("openrouter", "openai_compatible"):
+        return OpenRouterProvider(
+            prices=config.prices, base_url=config.base_url, api_key_env=config.api_key_env
+        )
     oracle = {s.render_prompt(c): c.expected for s in suites for c in s.cases}
     return MockProvider(oracle, seed=config.seed)
 
