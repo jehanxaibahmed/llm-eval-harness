@@ -25,7 +25,8 @@ def render_markdown(ins: Insights) -> str:
     out = [
         f"# Eval report: {ins.config_name}",
         "",
-        f"Run `{ins.run_id}` · started {ins.started_at} · {len(ins.models)} models"
+        f"Run `{ins.run_id}` · started {ins.started_at[:19].replace('T', ' ')} UTC"
+        f" · {len(ins.models)} models"
         f" · {len(ins.suites)} suites",
         "",
         "## Overall",
