@@ -73,7 +73,7 @@ def test_build_provider_openai_compatible(tmp_path):
     config = load_config(cfg)
     assert config.base_url == "http://localhost:11434/v1" and config.api_key_env is None
     provider = build_provider(config, [])
-    assert provider.url == "http://localhost:11434/v1/chat/completions"
+    assert provider.base_url == "http://localhost:11434/v1"
 
 
 def test_openai_compatible_requires_base_url(tmp_path):

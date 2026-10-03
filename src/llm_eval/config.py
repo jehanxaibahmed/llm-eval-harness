@@ -9,7 +9,7 @@ import yaml
 
 from llm_eval.pricing import ModelPrice
 
-PROVIDERS = {"mock", "openrouter", "openai_compatible"}
+PROVIDERS = {"mock", "openrouter", "openai_compatible", "litellm"}
 
 
 @dataclass(frozen=True)
