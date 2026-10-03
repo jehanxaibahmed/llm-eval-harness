@@ -1,8 +1,8 @@
-# Live run via OpenRouter. Requires OPENROUTER_API_KEY.
+# Live run via LiteLLM. Requires native API keys (OPENAI_API_KEY, etc.).
 # Model ids: https://openrouter.ai/models. Prices are a fallback for when the
 # API response doesn't include cost (USD per million tokens).
-name: openrouter
-provider: openrouter
+name: live
+provider: litellm
 concurrency: 4
 suites:
   - evals/order_extraction

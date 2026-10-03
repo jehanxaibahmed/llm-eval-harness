@@ -15,7 +15,7 @@ import pandas as pd
 from llm_eval.analysis import summarize
 from llm_eval.config import RunConfig
 from llm_eval.dataset import Suite, TestCase, load_suite
-from llm_eval.providers import MockProvider, OpenRouterProvider, Provider
+from llm_eval.providers import MockProvider, LiteLLMProvider, Provider
 from llm_eval.scoring import extract_json, score_case
 
 ProgressFn = Callable[[int, int], None]
@@ -49,9 +49,9 @@ class RunResult:
 
 
 def build_provider(config: RunConfig, suites: list[Suite]) -> Provider:
-    if config.provider in ("openrouter", "openai_compatible"):
-        return OpenRouterProvider(
-            prices=config.prices, base_url=config.base_url, api_key_env=config.api_key_env
+    if config.provider in ("openrouter", "openai_compatible", "litellm"):
+        return LiteLLMProvider(
+            prices=config.prices, base_url=config.base_url
         )
     oracle = {s.render_prompt(c): c.expected for s in suites for c in s.cases}
     return MockProvider(oracle, seed=config.seed)
