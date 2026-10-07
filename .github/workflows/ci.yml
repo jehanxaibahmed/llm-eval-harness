@@ -46,14 +46,18 @@ jobs:
       - run: pip install -e .
       - name: Run eval against baseline
         id: eval
-        run: llm-eval run -c configs/mock.yaml -o results --check
+        run: llm-eval run -c configs/simulator.yaml -o results --check
       - name: Publish job summary
         if: always()
         run: |
-          dir=$(ls -d results/*/ | head -1)
-          [ -f "$dir/regression.md" ] && cat "$dir/regression.md" >> "$GITHUB_STEP_SUMMARY"
+          dir=$(ls -d results/*/ 2>/dev/null | head -1)
+          if [ -z "$dir" ]; then
+            echo "No eval results were produced." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          if [ -f "$dir/regression.md" ]; then cat "$dir/regression.md" >> "$GITHUB_STEP_SUMMARY"; fi
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          [ -f "$dir/report.md" ] && cat "$dir/report.md" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f "$dir/report.md" ]; then cat "$dir/report.md" >> "$GITHUB_STEP_SUMMARY"; fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
