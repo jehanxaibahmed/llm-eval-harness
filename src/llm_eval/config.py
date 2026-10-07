@@ -9,7 +9,7 @@ import yaml
 
 from llm_eval.pricing import ModelPrice
 
-PROVIDERS = {"mock", "openrouter", "openai_compatible", "litellm"}
+PROVIDERS = {"simulator", "openrouter", "openai_compatible", "litellm"}
 
 
 @dataclass(frozen=True)
@@ -42,7 +42,7 @@ def load_config(path: str | Path) -> RunConfig:
     raw = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     base = path.parent.parent if path.parent.name == "configs" else path.parent
 
-    provider = raw.get("provider", "mock")
+    provider = raw.get("provider", "simulator")
     if provider not in PROVIDERS:
         raise ValueError(f"{path}: provider must be one of {sorted(PROVIDERS)}")
     if not raw.get("models"):

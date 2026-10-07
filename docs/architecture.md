@@ -10,7 +10,7 @@ flowchart LR
     S[evals/&lt;suite&gt;/<br/>suite.yaml · prompt.md · cases.jsonl] --> C[dataset.load_suite]
     B --> R[runner.run]
     C --> R
-    R -- prompt --> P{{providers<br/>OpenRouter · Mock}}
+    R -- prompt --> P{{providers<br/>OpenRouter · simulator}}
     P -- Completion<br/>text · tokens · latency · cost --> R
     R --> X[scoring.extract_json]
     X --> F[scoring.score_case<br/>field-level matchers]
@@ -29,7 +29,7 @@ flowchart LR
 | `scoring/parse.py` | Pulls a JSON object out of raw model text (bare, fenced, or surrounded by prose) |
 | `scoring/matchers.py` | `exact`, `normalized`, `numeric` (with tolerance), `date`, `unordered_list` |
 | `scoring/scorer.py` | Flattens expected JSON into leaf paths (`items[0].sku`) and scores each one |
-| `providers/` | `Provider` protocol returning a `Completion`; `OpenRouterProvider` (live) and `MockProvider` (offline, deterministic) |
+| `providers/` | `Provider` protocol returning a `Completion`; `OpenRouterProvider` (live) and `simulatorProvider` (offline, deterministic) |
 | `pricing.py` | USD per million tokens, used when the API response doesn't include cost |
 | `config.py` | Run config: provider, suites, models, concurrency, regression thresholds |
 | `runner.py` | Fans out suite × model × case on a thread pool; saves and reloads run artefacts |
@@ -49,7 +49,7 @@ flowchart LR
 
 ## Design decisions
 
-- **Offline-first.** `MockProvider` simulates models of different quality, speed and price
+- **Offline-first.** `simulatorProvider` simulates models of different quality, speed and price
   from the labelled answers. It's seeded, so CI is deterministic and needs no secrets. Live
   runs use the same code path with `provider: openrouter`.
 - **Rules live with the data.** Each suite declares how its fields are compared. For example,

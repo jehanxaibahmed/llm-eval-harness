@@ -18,7 +18,7 @@ from llm_eval.providers.base import Completion
 
 
 @dataclass(frozen=True)
-class MockProfile:
+class simulatorProfile:
     field_error_rate: float = 0.0
     invalid_json_rate: float = 0.0
     latency_s: float = 0.5
@@ -26,18 +26,18 @@ class MockProfile:
     wrap_in_prose: bool = False
 
 
-DEFAULT_PROFILES: dict[str, MockProfile] = {
-    "mock/precise-large": MockProfile(0.02, 0.0, 2.4, ModelPrice(3.0, 15.0)),
-    "mock/balanced-medium": MockProfile(0.08, 0.02, 1.1, ModelPrice(0.5, 1.5), wrap_in_prose=True),
-    "mock/fast-small": MockProfile(0.20, 0.06, 0.4, ModelPrice(0.1, 0.4), wrap_in_prose=True),
+DEFAULT_PROFILES: dict[str, simulatorProfile] = {
+    "simulator/precise-large": simulatorProfile(0.02, 0.0, 2.4, ModelPrice(3.0, 15.0)),
+    "simulator/balanced-medium": simulatorProfile(0.08, 0.02, 1.1, ModelPrice(0.5, 1.5), wrap_in_prose=True),
+    "simulator/fast-small": simulatorProfile(0.20, 0.06, 0.4, ModelPrice(0.1, 0.4), wrap_in_prose=True),
 }
 
 
-class MockProvider:
+class simulatorProvider:
     def __init__(
         self,
         oracle: dict[str, dict[str, Any]],
-        profiles: dict[str, MockProfile] | None = None,
+        profiles: dict[str, simulatorProfile] | None = None,
         seed: int = 0,
     ) -> None:
         self.oracle = oracle
@@ -47,7 +47,7 @@ class MockProvider:
     def complete(self, model: str, prompt: str) -> Completion:
         profile = self.profiles.get(model)
         if profile is None:
-            return Completion("", 0, 0, 0.0, 0.0, error=f"unknown mock model {model!r}")
+            return Completion("", 0, 0, 0.0, 0.0, error=f"unknown simulator model {model!r}")
         rng = random.Random(self._seed_for(model, prompt))
         expected = self.oracle.get(prompt)
         if expected is None:

@@ -1,20 +1,20 @@
 # Offline run: simulated models, no API key needed. Used by CI.
-name: mock
-provider: mock
+name: simulator
+provider: simulator
 seed: 0
 concurrency: 8
 suites:
   - evals/order_extraction
   - evals/invoice_extraction
 models:
-  - id: mock/precise-large
+  - id: simulator/precise-large
     label: precise-large
-  - id: mock/balanced-medium
+  - id: simulator/balanced-medium
     label: balanced-medium
-  - id: mock/fast-small
+  - id: simulator/fast-small
     label: fast-small
 regression:
-  baseline: baselines/mock.json
+  baseline: baselines/simulator.json
   max_accuracy_drop: 0.02
   max_json_valid_drop: 0.05
   max_cost_increase_pct: 25

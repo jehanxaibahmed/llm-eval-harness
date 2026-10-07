@@ -56,14 +56,14 @@ def test_floor_without_baseline():
     assert len(checks) == 1 and not checks[0].passed
 
 
-def test_committed_baseline_matches_mock_run(tmp_path):
+def test_committed_baseline_matches_simulator_run(tmp_path):
     """CI guard: the offline run must pass against the committed baseline."""
-    config = ROOT / "configs" / "mock.yaml"
+    config = ROOT / "configs" / "simulator.yaml"
     assert main(["run", "-c", str(config), "-o", str(tmp_path), "--check"]) == 0
 
 
 def test_cli_check_detects_regression(tmp_path):
-    main(["run", "-c", str(ROOT / "configs" / "mock.yaml"), "-o", str(tmp_path)])
+    main(["run", "-c", str(ROOT / "configs" / "simulator.yaml"), "-o", str(tmp_path)])
     run_dir = next(tmp_path.iterdir())
     # an impossible floor must fail
     rc = main(
@@ -71,7 +71,7 @@ def test_cli_check_detects_regression(tmp_path):
             "check",
             str(run_dir),
             "-b",
-            str(ROOT / "baselines/mock.json"),
+            str(ROOT / "baselines/simulator.json"),
             "--min-field-accuracy",
             "0.99",
         ]

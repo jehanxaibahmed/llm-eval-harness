@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 @pytest.fixture(scope="module")
 def result():
-    return run(load_config(ROOT / "configs" / "mock.yaml"))
+    return run(load_config(ROOT / "configs" / "simulator.yaml"))
 
 
 def test_insights_picks(result):
@@ -28,7 +28,7 @@ def test_insights_picks(result):
 
 def test_markdown_contains_tables(result):
     md = render_markdown(build_insights(result))
-    assert md.startswith("# Eval report: mock")
+    assert md.startswith("# Eval report: simulator")
     assert "## Suite: invoice_extraction" in md
     assert "| precise-large |" in md
     assert "### Weakest fields" in md

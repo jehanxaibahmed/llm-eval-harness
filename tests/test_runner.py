@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 @pytest.fixture
 def config(tmp_path):
-    cfg = load_config(ROOT / "configs" / "mock.yaml")
+    cfg = load_config(ROOT / "configs" / "simulator.yaml")
     cfg.output_dir = tmp_path
     return cfg
 
@@ -22,7 +22,7 @@ def test_config_resolves_paths(config):
     assert [m.label for m in config.models][0] == "precise-large"
 
 
-def test_mock_run_end_to_end(config):
+def test_simulator_run_end_to_end(config):
     result = run(config)
     n_cases = 24
     assert len(result.cases) == n_cases * len(config.models)
@@ -56,7 +56,7 @@ def test_summarize_empty():
 
 
 def test_cli_run(tmp_path, capsys):
-    assert main(["run", "-c", str(ROOT / "configs" / "mock.yaml"), "-o", str(tmp_path)]) == 0
+    assert main(["run", "-c", str(ROOT / "configs" / "simulator.yaml"), "-o", str(tmp_path)]) == 0
     assert "precise-large" in capsys.readouterr().out
     assert any(tmp_path.iterdir())
 

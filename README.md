@@ -12,7 +12,7 @@ Choosing a model for production is hard without numbers. This harness runs the s
 
 ```bash
 make install                                   # venv + editable install with dev tools
-.venv/bin/llm-eval run -c configs/mock.yaml    # offline run, no API key needed
+.venv/bin/llm-eval run -c configs/simulator.yaml    # offline run, no API key needed
 open results/*/report.html
 ```
 
@@ -25,7 +25,7 @@ export OPENROUTER_API_KEY=sk-or-...
 
 ### Local models with Ollama
 
-Any OpenAI-compatible endpoint works, including [Ollama](https://ollama.com). No real API key is needed (a dummy one is sent), and cost is reported as 0 unless you set a `price` on a model.
+Any OpenAI-compatible endpoint works, including [Ollama](https://ollama.com). No real API key is needed (a placeholder one is sent), and cost is reported as 0 unless you set a `price` on a model.
 
 ```bash
 ollama pull llama3.1:8b
@@ -54,7 +54,7 @@ Offline run of the bundled suites with three simulated models (see [`docs/sample
 
 Each suite section also lists picks (most accurate, cheapest, fastest, best value), each model's weakest fields, and the lowest-scoring documents.
 
-> The mock numbers come from seeded quality profiles. They show the pipeline working and are not a benchmark of real models.
+> The simulator numbers come from seeded quality profiles. They show the pipeline working and are not a benchmark of real models.
 
 ## 🧱 Project layout
 
@@ -62,7 +62,7 @@ Each suite section also lists picks (most accurate, cheapest, fastest, best valu
 src/llm_eval/
   dataset.py          suite format + validation
   scoring/            JSON extraction, matchers, field-level scorer
-  providers/          OpenRouter (live) and Mock (offline) behind one Provider protocol
+  providers/          OpenRouter (live) and simulator (offline) behind one Provider protocol
   pricing.py          per-token pricing fallback
   config.py           YAML run config
   runner.py           concurrent suite × model × case execution, artefact save/load
@@ -71,7 +71,7 @@ src/llm_eval/
   regression.py       baseline comparison and thresholds
   cli.py              llm-eval entry point
 evals/<suite>/        suite.yaml · prompt.md · cases.jsonl
-configs/              mock.yaml (CI) · openrouter.yaml (live) · ollama.yaml (local)
+configs/              simulator.yaml (CI) · openrouter.yaml (live) · ollama.yaml (local)
 baselines/            committed metrics the CI gate compares against
 docs/                 architecture notes and a sample report
 ```
@@ -96,7 +96,7 @@ See [docs/architecture.md](docs/architecture.md) for the data flow, metric defin
 
 ## ✅ CI
 
-Every push and PR runs ruff and pytest on Python 3.12 and 3.13. It then runs the offline eval with `--check` against `baselines/mock.json`. The regression table and full report go to the job summary, and the results are uploaded as an artifact. A manual `workflow_dispatch` run with `live: true` also evaluates real models through OpenRouter (it needs the `OPENROUTER_API_KEY` secret).
+Every push and PR runs ruff and pytest on Python 3.12 and 3.13. It then runs the offline eval with `--check` against `baselines/simulator.json`. The regression table and full report go to the job summary, and the results are uploaded as an artifact. A manual `workflow_dispatch` run with `live: true` also evaluates real models through OpenRouter (it needs the `OPENROUTER_API_KEY` secret).
 
 ## 🗺️ Roadmap
 

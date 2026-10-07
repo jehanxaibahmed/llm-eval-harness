@@ -13,7 +13,7 @@ def make_suite(tmp_path: Path):
         d = tmp_path / "suite"
         d.mkdir(exist_ok=True)
         (d / "prompt.md").write_text(prompt)
-        meta = {"name": "demo", "description": "demo suite", "fields": fields or {}}
+        meta = {"name": "showcase", "description": "showcase suite", "fields": fields or {}}
         (d / "suite.yaml").write_text(yaml.safe_dump(meta))
         (d / "cases.jsonl").write_text("\n".join(json.dumps(c) for c in cases))
         return d

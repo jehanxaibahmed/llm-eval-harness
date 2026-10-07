@@ -1,6 +1,6 @@
-# Eval report: mock
+# Eval report: simulator
 
-Run `20261002T180213Z-mock` · started 2026-10-02 18:02:13 UTC · 3 models · 2 suites
+Run `20261002T180213Z-simulator` · started 2026-10-02 18:02:13 UTC · 3 models · 2 suites
 
 ## Overall
 

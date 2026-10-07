@@ -8,7 +8,7 @@ CASE = {"id": "c1", "input": "Order 42", "expected": {"order_id": "42"}}
 def test_load_suite_roundtrip(make_suite):
     fields = {"total": {"matcher": "numeric", "tolerance": 0.01}}
     suite = load_suite(make_suite([CASE], fields=fields))
-    assert suite.name == "demo"
+    assert suite.name == "showcase"
     assert suite.cases[0].expected == {"order_id": "42"}
     assert suite.rule_for("total") == FieldRule("numeric", 0.01)
     assert suite.render_prompt(suite.cases[0]).endswith("Order 42")
