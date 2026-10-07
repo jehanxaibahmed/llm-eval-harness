@@ -28,8 +28,12 @@ class simulatorProfile:
 
 DEFAULT_PROFILES: dict[str, simulatorProfile] = {
     "simulator/precise-large": simulatorProfile(0.02, 0.0, 2.4, ModelPrice(3.0, 15.0)),
-    "simulator/balanced-medium": simulatorProfile(0.08, 0.02, 1.1, ModelPrice(0.5, 1.5), wrap_in_prose=True),
-    "simulator/fast-small": simulatorProfile(0.20, 0.06, 0.4, ModelPrice(0.1, 0.4), wrap_in_prose=True),
+    "simulator/balanced-medium": simulatorProfile(
+        0.08, 0.02, 1.1, ModelPrice(0.5, 1.5), wrap_in_prose=True
+    ),
+    "simulator/fast-small": simulatorProfile(
+        0.20, 0.06, 0.4, ModelPrice(0.1, 0.4), wrap_in_prose=True
+    ),
 }
 
 

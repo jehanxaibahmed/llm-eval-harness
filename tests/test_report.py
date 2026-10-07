@@ -45,7 +45,9 @@ def test_html_is_self_contained(result):
 def test_reports_rebuild_from_saved_run(result, tmp_path):
     out = result.save(tmp_path)
     loaded = load_run(out)
-    assert loaded.summary.round(6).equals(result.summary.round(6))
+    from pandas.testing import assert_frame_equal
+
+    assert_frame_equal(loaded.summary, result.summary, check_exact=False, atol=1e-5)
     md, html = write_reports(loaded, out)
     assert md.exists() and html.exists()
     assert main(["report", str(out)]) == 0

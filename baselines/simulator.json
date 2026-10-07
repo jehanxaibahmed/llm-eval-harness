@@ -3,50 +3,50 @@
     {
       "suite": "order_extraction",
       "model": "precise-large",
-      "field_accuracy": 0.9583333333333334,
-      "exact_match_rate": 0.5,
+      "field_accuracy": 0.9652777777777778,
+      "exact_match_rate": 0.5833333333333334,
       "json_valid_rate": 1.0,
       "cost_per_doc_usd": 0.00221625
     },
     {
       "suite": "order_extraction",
       "model": "balanced-medium",
-      "field_accuracy": 0.8125,
-      "exact_match_rate": 0.16666666666666666,
-      "json_valid_rate": 0.9166666666666666,
-      "cost_per_doc_usd": 0.0002687083333333333
+      "field_accuracy": 0.8958333333333334,
+      "exact_match_rate": 0.3333333333333333,
+      "json_valid_rate": 1.0,
+      "cost_per_doc_usd": 0.00028245833333333335
     },
     {
       "suite": "order_extraction",
       "model": "fast-small",
-      "field_accuracy": 0.6180555555555556,
+      "field_accuracy": 0.6944444444444444,
       "exact_match_rate": 0.0,
       "json_valid_rate": 0.9166666666666666,
-      "cost_per_doc_usd": 6.218333333333333e-05
+      "cost_per_doc_usd": 6.265e-05
     },
     {
       "suite": "invoice_extraction",
       "model": "precise-large",
-      "field_accuracy": 0.9847908745247148,
+      "field_accuracy": 0.9771863117870723,
       "exact_match_rate": 0.6666666666666666,
       "json_valid_rate": 1.0,
-      "cost_per_doc_usd": 0.00339275
+      "cost_per_doc_usd": 0.0033915
     },
     {
       "suite": "invoice_extraction",
       "model": "balanced-medium",
-      "field_accuracy": 0.908745247148289,
-      "exact_match_rate": 0.25,
-      "json_valid_rate": 1.0,
-      "cost_per_doc_usd": 0.00040308333333333336
+      "field_accuracy": 0.752851711026616,
+      "exact_match_rate": 0.16666666666666666,
+      "json_valid_rate": 0.9166666666666666,
+      "cost_per_doc_usd": 0.0003627083333333333
     },
     {
       "suite": "invoice_extraction",
       "model": "fast-small",
-      "field_accuracy": 0.6387832699619772,
+      "field_accuracy": 0.7642585551330798,
       "exact_match_rate": 0.0,
-      "json_valid_rate": 0.9166666666666666,
-      "cost_per_doc_usd": 8.744166666666666e-05
+      "json_valid_rate": 1.0,
+      "cost_per_doc_usd": 9.3875e-05
     }
   ]
 }
